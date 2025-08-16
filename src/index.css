@@ -38,27 +38,38 @@ All colors MUST be HSL.
 
     --radius: 0.75rem;
     
-    /* Custom design tokens */
+    /* Enhanced Custom design tokens */
     --chocolate: 25 50% 15%;
     --chocolate-light: 30 40% 25%;
+    --chocolate-dark: 20 60% 10%;
     --gold: 38 70% 60%;
     --gold-light: 45 80% 75%;
+    --gold-dark: 35 60% 45%;
     --cream: 35 20% 96%;
     --warm-white: 40 15% 98%;
+    --copper: 15 45% 40%;
+    --bronze: 28 35% 35%;
     
-    /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(var(--chocolate)), hsl(var(--chocolate-light)));
+    /* Enhanced Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(var(--chocolate)), hsl(var(--chocolate-light)), hsl(var(--copper)));
     --gradient-gold: linear-gradient(135deg, hsl(var(--gold)), hsl(var(--gold-light)));
     --gradient-warm: linear-gradient(180deg, hsl(var(--warm-white)), hsl(var(--cream)));
+    --gradient-luxury: linear-gradient(45deg, hsl(var(--gold)), hsl(var(--copper)), hsl(var(--bronze)));
+    --gradient-chocolate: linear-gradient(180deg, hsl(var(--chocolate-light)), hsl(var(--chocolate-dark)));
+    --gradient-shimmer: linear-gradient(90deg, transparent, hsl(var(--gold) / 0.4), transparent);
     
-    /* Shadows */
+    /* Enhanced Shadows */
     --shadow-warm: 0 10px 30px -10px hsl(var(--chocolate) / 0.2);
     --shadow-gold: 0 8px 25px -8px hsl(var(--gold) / 0.3);
     --shadow-elegant: 0 20px 60px -20px hsl(var(--chocolate) / 0.15);
+    --shadow-luxury: 0 25px 80px -25px hsl(var(--gold) / 0.25);
+    --shadow-glow: 0 0 40px hsl(var(--gold) / 0.4);
+    --shadow-deep: 0 30px 100px -30px hsl(var(--chocolate-dark) / 0.3);
     
-    /* Transitions */
+    /* Enhanced Transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-luxury: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
     --sidebar-background: 0 0% 98%;
 

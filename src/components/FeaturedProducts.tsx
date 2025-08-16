@@ -78,7 +78,7 @@ const FeaturedProducts = () => {
           {products.map((product, index) => (
             <div 
               key={product.id}
-              className="group bg-card rounded-2xl overflow-hidden shadow-warm hover:shadow-elegant transition-all duration-500 transform hover:scale-105 animate-scale-in"
+              className="group bg-card rounded-2xl overflow-hidden shadow-warm hover:shadow-luxury transition-all duration-500 transform hover:scale-105 animate-bounce-in relative"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Product Image */}
@@ -108,9 +108,12 @@ const FeaturedProducts = () => {
 
                 {/* Quick Add Overlay */}
                 <div className="absolute inset-0 bg-chocolate/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
-                  <Button variant="elegant" className="transform scale-90 group-hover:scale-100 transition-transform duration-300">
-                    <ShoppingCart className="w-4 h-4 mr-2" />
-                    Quick Add
+                  <Button variant="elegant" className="transform scale-90 group-hover:scale-100 transition-transform duration-300 shadow-glow relative overflow-hidden">
+                    <span className="relative z-10">
+                      <ShoppingCart className="w-4 h-4 mr-2" />
+                      Quick Add
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-shimmer animate-shimmer opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
                   </Button>
                 </div>
               </div>
@@ -122,7 +125,8 @@ const FeaturedProducts = () => {
                     {[...Array(5)].map((_, i) => (
                       <Star 
                         key={i} 
-                        className={`w-4 h-4 ${i < Math.floor(product.rating) ? 'fill-gold text-gold' : 'text-muted'}`} 
+                        className={`w-4 h-4 transition-all duration-300 ${i < Math.floor(product.rating) ? 'fill-gold text-gold animate-glow' : 'text-muted'}`}
+                        style={{ animationDelay: `${i * 0.1}s` }}
                       />
                     ))}
                   </div>
@@ -144,8 +148,9 @@ const FeaturedProducts = () => {
                     <span className="text-xl font-bold text-chocolate">{product.price}</span>
                     <span className="text-sm text-muted-foreground line-through">{product.originalPrice}</span>
                   </div>
-                  <Button variant="outline" size="sm" className="hover:bg-gold hover:text-chocolate hover:border-gold transition-all duration-300">
-                    Add to Cart
+                  <Button variant="outline" size="sm" className="hover:bg-gold hover:text-chocolate hover:border-gold transition-all duration-300 shadow-gold hover:shadow-glow relative overflow-hidden group/add">
+                    <span className="relative z-10">Add to Cart</span>
+                    <div className="absolute inset-0 bg-gradient-shimmer animate-shimmer opacity-0 group-hover/add:opacity-20 transition-opacity duration-300"></div>
                   </Button>
                 </div>
               </div>
@@ -155,9 +160,10 @@ const FeaturedProducts = () => {
 
         {/* View All Button */}
         <div className="text-center mt-12">
-          <Button variant="gold" size="lg" className="group">
-            View All Products
-            <ShoppingCart className="w-5 h-5 ml-2 transition-transform group-hover:scale-110" />
+          <Button variant="gold" size="lg" className="group shadow-luxury hover:shadow-glow transition-all duration-500 relative overflow-hidden animate-bounce-in">
+            <span className="relative z-10">View All Products</span>
+            <ShoppingCart className="w-5 h-5 ml-2 transition-transform group-hover:scale-110 relative z-10" />
+            <div className="absolute inset-0 bg-gradient-shimmer animate-shimmer opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
           </Button>
         </div>
       </div>

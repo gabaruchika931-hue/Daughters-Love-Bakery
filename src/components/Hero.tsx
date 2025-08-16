@@ -15,21 +15,27 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl animate-fade-in">
-          <div className="flex items-center space-x-2 mb-6">
+        <div className="max-w-3xl animate-slide-in-left">
+          <div className="flex items-center space-x-2 mb-6 animate-bounce-in" style={{ animationDelay: '0.3s' }}>
             <div className="flex space-x-1">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 fill-gold text-gold" />
+                <Star key={i} className="w-5 h-5 fill-gold text-gold animate-glow" style={{ animationDelay: `${i * 0.2}s` }} />
               ))}
             </div>
-            <span className="text-gold font-medium">Premium Quality Since 1995</span>
+            <span className="text-gold font-medium relative">
+              Premium Quality Since 1995
+              <div className="absolute inset-0 bg-gradient-shimmer animate-shimmer opacity-30"></div>
+            </span>
           </div>
 
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-warm-white mb-6 leading-tight">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-warm-white mb-6 leading-tight animate-slide-in-right" style={{ animationDelay: '0.5s' }}>
             Indulge in 
-            <span className="bg-gradient-gold bg-clip-text text-transparent"> Luxury</span>
+            <span className="bg-gradient-luxury bg-clip-text text-transparent animate-glow relative">
+              Luxury
+              <div className="absolute inset-0 bg-gradient-shimmer animate-shimmer opacity-20"></div>
+            </span>
             <br />
-            Gourmet Delights
+            <span className="animate-pulse-slow">Gourmet Delights</span>
           </h1>
 
           <p className="text-xl md:text-2xl text-warm-white/90 mb-8 leading-relaxed">
@@ -37,14 +43,15 @@ const Hero = () => {
             Each bite is a journey through exquisite flavors and unmatched quality.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 mb-12">
-            <Button variant="hero" size="lg" className="group">
-              Explore Collection
-              <Heart className="w-5 h-5 group-hover:animate-pulse" />
+          <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-fade-in" style={{ animationDelay: '0.8s' }}>
+            <Button variant="hero" size="lg" className="group shadow-luxury hover:shadow-glow transition-all duration-500 relative overflow-hidden">
+              <span className="relative z-10">Explore Collection</span>
+              <Heart className="w-5 h-5 group-hover:animate-pulse relative z-10" />
+              <div className="absolute inset-0 bg-gradient-shimmer animate-shimmer opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
             </Button>
-            <Button variant="elegant" size="lg">
+            <Button variant="elegant" size="lg" className="shadow-gold hover:shadow-luxury transition-all duration-500 group">
               Our Story
-              <Award className="w-5 h-5" />
+              <Award className="w-5 h-5 group-hover:animate-bounce" />
             </Button>
           </div>
 
@@ -66,10 +73,12 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Floating Elements */}
-      <div className="absolute top-20 right-10 w-16 h-16 bg-gold/20 rounded-full animate-float hidden lg:block"></div>
-      <div className="absolute bottom-40 right-20 w-8 h-8 bg-warm-white/20 rounded-full animate-float" style={{ animationDelay: '1s' }}></div>
-      <div className="absolute top-1/2 right-5 w-12 h-12 bg-gold/10 rounded-full animate-float" style={{ animationDelay: '2s' }}></div>
+      {/* Enhanced Floating Elements */}
+      <div className="absolute top-20 right-10 w-16 h-16 bg-gradient-luxury rounded-full animate-float shadow-glow hidden lg:block"></div>
+      <div className="absolute bottom-40 right-20 w-8 h-8 bg-gradient-gold rounded-full animate-float shadow-gold" style={{ animationDelay: '1s' }}></div>
+      <div className="absolute top-1/2 right-5 w-12 h-12 bg-gradient-shimmer rounded-full animate-float animate-rotate-slow" style={{ animationDelay: '2s' }}></div>
+      <div className="absolute top-1/3 left-10 w-6 h-6 bg-copper rounded-full animate-pulse-slow" style={{ animationDelay: '0.5s' }}></div>
+      <div className="absolute bottom-1/3 left-20 w-10 h-10 bg-bronze/30 rounded-full animate-glow" style={{ animationDelay: '1.5s' }}></div>
     </section>
   );
 };

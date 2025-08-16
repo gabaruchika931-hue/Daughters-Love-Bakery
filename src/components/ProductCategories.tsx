@@ -55,7 +55,7 @@ const ProductCategories = () => {
           {categories.map((category, index) => (
             <div 
               key={category.title}
-              className="group relative overflow-hidden rounded-2xl shadow-warm hover:shadow-elegant transition-all duration-500 transform hover:scale-105"
+              className="group relative overflow-hidden rounded-2xl shadow-warm hover:shadow-luxury transition-all duration-500 transform hover:scale-105 animate-bounce-in"
               style={{ animationDelay: `${index * 0.2}s` }}
             >
               {/* Background Image */}
@@ -66,6 +66,9 @@ const ProductCategories = () => {
               
               {/* Gradient Overlay */}
               <div className={`absolute inset-0 bg-gradient-to-t ${category.color} opacity-80 group-hover:opacity-90 transition-opacity duration-300`}></div>
+              
+              {/* Shimmer Effect */}
+              <div className="absolute inset-0 bg-gradient-shimmer opacity-0 group-hover:opacity-20 animate-shimmer transition-opacity duration-300"></div>
               
               {/* Content */}
               <div className="relative z-10 p-8 h-96 flex flex-col justify-end">
@@ -81,25 +84,28 @@ const ProductCategories = () => {
                   </div>
                   <Button 
                     variant={category.textColor === "text-warm-white" ? "elegant" : "default"}
-                    className="group/btn"
+                    className="group/btn shadow-gold hover:shadow-glow transition-all duration-300 relative overflow-hidden"
                   >
-                    Explore Collection
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+                    <span className="relative z-10">Explore Collection</span>
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1 relative z-10" />
+                    <div className="absolute inset-0 bg-gradient-shimmer animate-shimmer opacity-0 group-hover/btn:opacity-30 transition-opacity duration-300"></div>
                   </Button>
                 </div>
               </div>
 
               {/* Decorative Elements */}
-              <div className="absolute top-4 right-4 w-12 h-12 bg-white/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-glow"></div>
+              <div className="absolute top-4 right-4 w-12 h-12 bg-gradient-luxury rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-glow shadow-glow"></div>
+              <div className="absolute bottom-4 left-4 w-6 h-6 bg-gold/30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse-slow"></div>
             </div>
           ))}
         </div>
 
         {/* Call to Action */}
         <div className="text-center mt-16">
-          <Button variant="gold" size="lg" className="group">
-            View All Products
-            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+          <Button variant="gold" size="lg" className="group shadow-luxury hover:shadow-glow transition-all duration-500 relative overflow-hidden animate-bounce-in">
+            <span className="relative z-10">View All Products</span>
+            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1 relative z-10" />
+            <div className="absolute inset-0 bg-gradient-shimmer animate-shimmer opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
           </Button>
         </div>
       </div>
