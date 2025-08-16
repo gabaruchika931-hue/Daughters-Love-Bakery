@@ -6,7 +6,7 @@ const Hero = () => {
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
-      <div 
+      <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${heroImage})` }}
       >
@@ -28,18 +28,23 @@ const Hero = () => {
             </span>
           </div>
 
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-warm-white mb-6 leading-tight animate-slide-in-right" style={{ animationDelay: '0.5s' }}>
-            Indulge in 
+          <h1
+            className="text-4xl md:text-6xl lg:text-7xl font-bold text-warm-white mb-6 leading-tight animate-slide-in-right"
+            style={{ animationDelay: '0.5s' }}
+          >
+            Welcome to
             <span className="bg-gradient-luxury bg-clip-text text-transparent animate-glow relative">
-              Luxury
+              Daughters Love Bakery
               <div className="absolute inset-0 bg-gradient-shimmer animate-shimmer opacity-20"></div>
             </span>
+
             <br />
-            <span className="animate-pulse-slow">Gourmet Delights</span>
+            <span className="animate-pulse-slow">Where Every Bite is Made with Love</span>
           </h1>
 
+
           <p className="text-xl md:text-2xl text-warm-white/90 mb-8 leading-relaxed">
-            Discover our handcrafted chocolates, artisanal dry cakes, and premium dry fruits. 
+            Discover our handcrafted chocolates, artisanal dry cakes, and premium dry fruits.
             Each bite is a journey through exquisite flavors and unmatched quality.
           </p>
 

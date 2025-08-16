@@ -14,7 +14,7 @@ const Navbar = () => {
             <div className="w-8 h-8 bg-gradient-gold rounded-full flex items-center justify-center">
               <span className="text-chocolate font-bold text-lg">G</span>
             </div>
-            <span className="text-xl font-bold text-chocolate">Gourmet Delights</span>
+            <span className="text-xl font-bold text-chocolate">Daughter's Love Bakery</span>
           </div>
 
           {/* Desktop Navigation */}

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 import dryFruitsImage from "@/assets/dry-fruits.jpg";
 import dryCakesImage from "@/assets/dry-cakes.jpg";
 
@@ -11,7 +12,8 @@ const ProductCategories = () => {
       image: "/placeholder.svg?height=400&width=400&text=Chocolates",
       color: "from-chocolate to-chocolate-light",
       textColor: "text-warm-white",
-      price: "Starting from $25"
+      price: "Starting from $25",
+      link: "/products#chocolates"
     },
     {
       title: "Artisanal Dry Cakes",
@@ -19,7 +21,8 @@ const ProductCategories = () => {
       image: dryCakesImage,
       color: "from-gold to-gold-light",
       textColor: "text-chocolate",
-      price: "Starting from $15"
+      price: "Starting from $15",
+      link: "/products#dry-cakes"
     },
     {
       title: "Premium Dry Fruits",
@@ -27,7 +30,8 @@ const ProductCategories = () => {
       image: dryFruitsImage,
       color: "from-cream to-warm-white",
       textColor: "text-chocolate",
-      price: "Starting from $20"
+      price: "Starting from $20",
+      link: "/products#dry-fruits"
     }
   ];
 
@@ -45,7 +49,7 @@ const ProductCategories = () => {
             Exquisite Product Collections
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Each category represents our commitment to quality, tradition, and the finest ingredients 
+            Each category represents our commitment to quality, tradition, and the finest ingredients
             sourced from trusted partners worldwide.
           </p>
         </div>
@@ -53,23 +57,25 @@ const ProductCategories = () => {
         {/* Categories Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {categories.map((category, index) => (
-            <div 
+            <div
               key={category.title}
               className="group relative overflow-hidden rounded-2xl shadow-warm hover:shadow-luxury transition-all duration-500 transform hover:scale-105 animate-bounce-in"
               style={{ animationDelay: `${index * 0.2}s` }}
             >
               {/* Background Image */}
-              <div 
+              <div
                 className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                 style={{ backgroundImage: `url(${category.image})` }}
               ></div>
-              
+
               {/* Gradient Overlay */}
-              <div className={`absolute inset-0 bg-gradient-to-t ${category.color} opacity-80 group-hover:opacity-90 transition-opacity duration-300`}></div>
-              
+              <div
+                className={`absolute inset-0 bg-gradient-to-t ${category.color} opacity-80 group-hover:opacity-90 transition-opacity duration-300`}
+              ></div>
+
               {/* Shimmer Effect */}
               <div className="absolute inset-0 bg-gradient-shimmer opacity-0 group-hover:opacity-20 animate-shimmer transition-opacity duration-300"></div>
-              
+
               {/* Content */}
               <div className="relative z-10 p-8 h-96 flex flex-col justify-end">
                 <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
@@ -82,14 +88,16 @@ const ProductCategories = () => {
                   <div className={`text-lg font-semibold ${category.textColor} mb-4`}>
                     {category.price}
                   </div>
-                  <Button 
-                    variant={category.textColor === "text-warm-white" ? "elegant" : "default"}
-                    className="group/btn shadow-gold hover:shadow-glow transition-all duration-300 relative overflow-hidden"
-                  >
-                    <span className="relative z-10">Explore Collection</span>
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1 relative z-10" />
-                    <div className="absolute inset-0 bg-gradient-shimmer animate-shimmer opacity-0 group-hover/btn:opacity-30 transition-opacity duration-300"></div>
-                  </Button>
+                  <Link to={category.link}>
+                    <Button
+                      variant={category.textColor === "text-warm-white" ? "elegant" : "default"}
+                      className="group/btn shadow-gold hover:shadow-glow transition-all duration-300 relative overflow-hidden"
+                    >
+                      <span className="relative z-10">Explore Collection</span>
+                      <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1 relative z-10" />
+                      <div className="absolute inset-0 bg-gradient-shimmer animate-shimmer opacity-0 group-hover/btn:opacity-30 transition-opacity duration-300"></div>
+                    </Button>
+                  </Link>
                 </div>
               </div>
 
@@ -102,11 +110,17 @@ const ProductCategories = () => {
 
         {/* Call to Action */}
         <div className="text-center mt-16">
-          <Button variant="gold" size="lg" className="group shadow-luxury hover:shadow-glow transition-all duration-500 relative overflow-hidden animate-bounce-in">
-            <span className="relative z-10">View All Products</span>
-            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1 relative z-10" />
-            <div className="absolute inset-0 bg-gradient-shimmer animate-shimmer opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
-          </Button>
+          <Link to="/products">
+            <Button
+              variant="gold"
+              size="lg"
+              className="group shadow-luxury hover:shadow-glow transition-all duration-500 relative overflow-hidden animate-bounce-in"
+            >
+              <span className="relative z-10">View All Products</span>
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1 relative z-10" />
+              <div className="absolute inset-0 bg-gradient-shimmer animate-shimmer opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
