@@ -36,6 +36,10 @@ const formatPrice = (value: any) => {
   return isNaN(num) ? value : `Rs. ${num.toFixed(2)}`;
 };
 
+// ✅ Cache Settings
+const CACHE_KEY = "cached_categories";
+const CACHE_DURATION = 1000 * 60 * 60 * 24; // 24 hours
+
 const ProductsPage: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -71,6 +75,18 @@ const ProductsPage: React.FC = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
+        // ✅ Check cache first
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Date.now() - parsed.timestamp < CACHE_DURATION) {
+            setCategories(parsed.data);
+            setLoading(false);
+            return;
+          }
+        }
+
+        // ✅ Fetch from API
         const res = await fetch(
           `${API_URL}/api/categories?populate[products][populate]=image`,
           {
@@ -116,9 +132,22 @@ const ProductsPage: React.FC = () => {
           };
         });
 
+        // ✅ Save to cache
+        localStorage.setItem(
+          CACHE_KEY,
+          JSON.stringify({ data: mapped, timestamp: Date.now() })
+        );
+
         setCategories(mapped);
       } catch (error) {
         console.error("Error fetching categories:", error);
+
+        // ✅ Fallback: Use old cached data if API fails
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          setCategories(parsed.data);
+        }
       } finally {
         setLoading(false);
       }

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, ShoppingBag, Star } from "lucide-react";
 import logo from "@/assets/logo.png";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,12 +21,22 @@ const Navbar = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Smooth scroll handler
+  const handleScrollToContact = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const section = document.getElementById("contact");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+    setIsMenuOpen(false); // close mobile menu if open
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/30 backdrop-blur-lg border-b border-chocolate/20 shadow-md">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20 relative">
           {/* Logo with floating sparkles */}
-          <div className="flex items-center space-x-3 relative">
+          <Link to="/" className="flex items-center space-x-3 relative">
             <div className="w-20 h-20 rounded-full bg-white/50 backdrop-blur-md shadow-lg flex items-center justify-center overflow-hidden transition-transform duration-500 hover:scale-105 relative">
               <img
                 src={logo}
@@ -45,19 +56,35 @@ const Navbar = () => {
             <span className="text-2xl md:text-3xl font-extrabold text-chocolate tracking-wide drop-shadow-sm">
               Daughter&apos;s Love Bakery
             </span>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {["Home", "Products", "About", "Contact"].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="relative text-chocolate font-medium hover:text-gold transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-gold after:shadow-[0_0_8px_rgba(255,215,0,0.7)] after:transition-all after:duration-300 hover:after:w-full"
-              >
-                {item}
-              </a>
-            ))}
+            <Link
+              to="/"
+              className="relative text-chocolate font-medium hover:text-gold transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-gold after:shadow-[0_0_8px_rgba(255,215,0,0.7)] after:transition-all after:duration-300 hover:after:w-full"
+            >
+              Home
+            </Link>
+            <Link
+              to="/products"
+              className="relative text-chocolate font-medium hover:text-gold transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-gold after:shadow-[0_0_8px_rgba(255,215,0,0.7)] after:transition-all after:duration-300 hover:after:w-full"
+            >
+              Products
+            </Link>
+            <Link
+              to="/about"
+              className="relative text-chocolate font-medium hover:text-gold transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-gold after:shadow-[0_0_8px_rgba(255,215,0,0.7)] after:transition-all after:duration-300 hover:after:w-full"
+            >
+              About
+            </Link>
+            <a
+              href="#contact"
+              onClick={handleScrollToContact}
+              className="relative cursor-pointer text-chocolate font-medium hover:text-gold transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-gold after:shadow-[0_0_8px_rgba(255,215,0,0.7)] after:transition-all after:duration-300 hover:after:w-full"
+            >
+              Contact
+            </a>
           </div>
 
           {/* Cart & Mobile Menu */}
@@ -92,15 +119,34 @@ const Navbar = () => {
         {isMenuOpen && (
           <div className="md:hidden animate-slide-down">
             <div className="px-4 pt-4 pb-6 space-y-2 bg-white/40 backdrop-blur-md border-t border-chocolate/20 rounded-b-2xl shadow-lg">
-              {["Home", "Products", "About", "Contact"].map((item) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
-                  className="block px-3 py-2 text-chocolate font-medium hover:text-gold transition-colors duration-300"
-                >
-                  {item}
-                </a>
-              ))}
+              <Link
+                to="/"
+                className="block px-3 py-2 text-chocolate font-medium hover:text-gold transition-colors duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Home
+              </Link>
+              <Link
+                to="/products"
+                className="block px-3 py-2 text-chocolate font-medium hover:text-gold transition-colors duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Products
+              </Link>
+              <Link
+                to="/about"
+                className="block px-3 py-2 text-chocolate font-medium hover:text-gold transition-colors duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                About
+              </Link>
+              <a
+                href="#contact"
+                onClick={handleScrollToContact}
+                className="block px-3 py-2 text-chocolate font-medium hover:text-gold transition-colors duration-300"
+              >
+                Contact
+              </a>
             </div>
           </div>
         )}

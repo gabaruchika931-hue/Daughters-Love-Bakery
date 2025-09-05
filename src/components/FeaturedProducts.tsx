@@ -1,174 +1,128 @@
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Star, ShoppingCart, Heart } from "lucide-react";
+import { Star, Award, Leaf, Heart } from "lucide-react";
+import { Link } from "react-router-dom";
 
-const FeaturedProducts = () => {
-  const products = [
+// ✅ Import images from src/assets
+import trufflesImg from "@/assets/truffles.jpg";
+import cakeImg from "@/assets/cake.jpg";
+
+const FeaturedSection = () => {
+  const highlights = [
     {
-      id: 1,
-      name: "Dark Chocolate Truffles",
-      price: "$45",
-      originalPrice: "$55",
-      image: "/placeholder.svg?height=300&width=300&text=Truffles",
-      rating: 4.9,
-      reviews: 127,
-      badge: "Bestseller",
-      description: "Rich 70% dark chocolate truffles dusted with cocoa powder"
+      icon: Award,
+      title: "Handcrafted with Love",
+      description:
+        "Each creation is baked fresh, with artisanal care and precision.",
     },
     {
-      id: 2,
-      name: "Almond Honey Cake",
-      price: "$28",
-      originalPrice: "$32",
-      image: "/placeholder.svg?height=300&width=300&text=Cake",
-      rating: 4.8,
-      reviews: 89,
-      badge: "New",
-      description: "Traditional recipe with premium almonds and wildflower honey"
+      icon: Leaf,
+      title: "Natural Ingredients",
+      description:
+        "We only use the finest, freshest ingredients — no shortcuts.",
     },
     {
-      id: 3,
-      name: "Mixed Nuts Premium",
-      price: "$35",
-      originalPrice: "$40",
-      image: "/placeholder.svg?height=300&width=300&text=Nuts",
-      rating: 4.7,
-      reviews: 156,
-      badge: "Organic",
-      description: "Carefully selected cashews, almonds, and pistachios"
+      icon: Heart,
+      title: "Loved by Thousands",
+      description:
+        "Over 1000+ happy customers who call us their go-to cakery.",
     },
-    {
-      id: 4,
-      name: "Chocolate Covered Dates",
-      price: "$32",
-      originalPrice: "$38",
-      image: "/placeholder.svg?height=300&width=300&text=Dates",
-      rating: 4.9,
-      reviews: 203,
-      badge: "Limited",
-      description: "Medjool dates covered in Belgian dark chocolate"
-    }
   ];
 
-  const getBadgeVariant = (badge: string) => {
-    switch (badge) {
-      case "Bestseller": return "default";
-      case "New": return "secondary";
-      case "Organic": return "outline";
-      case "Limited": return "destructive";
-      default: return "default";
-    }
-  };
+  const featured = [
+    {
+      name: "Dark Chocolate Truffles",
+      tagline: "Our All-Time Bestseller",
+      image: trufflesImg,
+      fallback: "bg-gradient-to-br from-[#5C4033] to-[#3D2B1F]",
+    },
+    {
+      name: "Almond Honey Cake",
+      tagline: "A Sweet Hug in Every Slice",
+      image: cakeImg,
+      fallback: "bg-gradient-to-br from-[#D4A373] to-[#FAE1C0]",
+    },
+  ];
 
   return (
-    <section className="py-20 bg-warm-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold text-chocolate mb-6">
-            Featured Products
+    <section className="py-20 bg-gradient-to-br from-[#F5F5DC] via-[#F0E6D6] to-[#E6DAC8]">
+      <div className="container mx-auto px-6 lg:px-12">
+        {/* Section Title */}
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-chocolate mb-4">
+            Why Choose <span className="text-gold">Us?</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Discover our most loved products, carefully crafted to deliver exceptional taste and quality.
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            We’re more than just desserts — we’re love, memories, and happiness
+            served on a plate.
           </p>
         </div>
 
-        {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {products.map((product, index) => (
-            <div 
-              key={product.id}
-              className="group bg-card rounded-2xl overflow-hidden shadow-warm hover:shadow-luxury transition-all duration-500 transform hover:scale-105 animate-bounce-in relative"
-              style={{ animationDelay: `${index * 0.1}s` }}
+        {/* Highlights Row */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          {highlights.map((item, i) => (
+            <div
+              key={i}
+              className="bg-card p-6 rounded-2xl shadow-warm hover:shadow-elegant transition transform hover:scale-105 text-center"
             >
-              {/* Product Image */}
-              <div className="relative overflow-hidden">
-                <img 
-                  src={product.image} 
-                  alt={product.name}
-                  className="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                
-                {/* Badge */}
-                <Badge 
-                  variant={getBadgeVariant(product.badge)}
-                  className="absolute top-4 left-4 z-10"
-                >
-                  {product.badge}
-                </Badge>
-
-                {/* Wishlist Button */}
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  className="absolute top-4 right-4 bg-white/90 hover:bg-white shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300"
-                >
-                  <Heart className="w-4 h-4" />
-                </Button>
-
-                {/* Quick Add Overlay */}
-                <div className="absolute inset-0 bg-chocolate/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
-                  <Button variant="elegant" className="transform scale-90 group-hover:scale-100 transition-transform duration-300 shadow-glow relative overflow-hidden">
-                    <span className="relative z-10">
-                      <ShoppingCart className="w-4 h-4 mr-2" />
-                      Quick Add
-                    </span>
-                    <div className="absolute inset-0 bg-gradient-shimmer animate-shimmer opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
-                  </Button>
-                </div>
+              <div className="w-14 h-14 mx-auto mb-4 bg-gradient-gold rounded-xl flex items-center justify-center shadow-gold">
+                <item.icon className="w-7 h-7 text-chocolate" />
               </div>
+              <h3 className="text-xl font-bold text-chocolate mb-2">
+                {item.title}
+              </h3>
+              <p className="text-muted-foreground">{item.description}</p>
+            </div>
+          ))}
+        </div>
 
-              {/* Product Info */}
-              <div className="p-6">
-                <div className="flex items-center mb-2">
-                  <div className="flex space-x-1 mr-2">
-                    {[...Array(5)].map((_, i) => (
-                      <Star 
-                        key={i} 
-                        className={`w-4 h-4 transition-all duration-300 ${i < Math.floor(product.rating) ? 'fill-gold text-gold animate-glow' : 'text-muted'}`}
-                        style={{ animationDelay: `${i * 0.1}s` }}
-                      />
-                    ))}
-                  </div>
-                  <span className="text-sm text-muted-foreground">
-                    {product.rating} ({product.reviews})
-                  </span>
-                </div>
+        {/* Featured Signature Creations */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          {featured.map((item, i) => (
+            <div
+              key={i}
+              className={`relative rounded-3xl overflow-hidden shadow-elegant group ${
+                !item.image ? item.fallback : ""
+              }`}
+            >
+              {/* Background Image */}
+              {item.image && (
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="w-full h-80 object-cover transform group-hover:scale-110 transition duration-700"
+                />
+              )}
 
-                <h3 className="text-lg font-bold text-chocolate mb-2 group-hover:text-gold transition-colors duration-300">
-                  {product.name}
-                </h3>
-                
-                <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                  {product.description}
-                </p>
+              {/* Overlay Content */}
+              <div className="absolute inset-0 bg-chocolate/50 flex flex-col justify-center items-center text-center text-white p-6">
+                <h3 className="text-3xl font-bold mb-2">{item.name}</h3>
+                <p className="text-lg mb-4">{item.tagline}</p>
 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-xl font-bold text-chocolate">{product.price}</span>
-                    <span className="text-sm text-muted-foreground line-through">{product.originalPrice}</span>
-                  </div>
-                  <Button variant="outline" size="sm" className="hover:bg-gold hover:text-chocolate hover:border-gold transition-all duration-300 shadow-gold hover:shadow-glow relative overflow-hidden group/add">
-                    <span className="relative z-10">Add to Cart</span>
-                    <div className="absolute inset-0 bg-gradient-shimmer animate-shimmer opacity-0 group-hover/add:opacity-20 transition-opacity duration-300"></div>
+                {/* ✅ Navigate to Products Page */}
+                <Link to="/products">
+                  <Button variant="gold" size="lg">
+                    Explore Collection
                   </Button>
-                </div>
+                </Link>
               </div>
             </div>
           ))}
         </div>
 
-        {/* View All Button */}
-        <div className="text-center mt-12">
-          <Button variant="gold" size="lg" className="group shadow-luxury hover:shadow-glow transition-all duration-500 relative overflow-hidden animate-bounce-in">
-            <span className="relative z-10">View All Products</span>
-            <ShoppingCart className="w-5 h-5 ml-2 transition-transform group-hover:scale-110 relative z-10" />
-            <div className="absolute inset-0 bg-gradient-shimmer animate-shimmer opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
-          </Button>
+        {/* Stats Ribbon */}
+        <div className="mt-16 text-center">
+          <div className="inline-block bg-card rounded-full px-6 py-3 shadow-gold">
+            <Star className="w-5 h-5 inline text-gold mr-2" />
+            <span className="font-semibold text-chocolate">
+              Rated 4.9/5 by 1000+ Happy Customers
+            </span>
+          </div>
         </div>
       </div>
+
+
     </section>
   );
 };
 
-export default FeaturedProducts;
+export default FeaturedSection;

@@ -7,7 +7,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Pages
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import ProductsPage from "./pages/Products"; // ✅ Products page
+import ProductsPage from "./pages/Products";
+
+// Components
+import About from "./components/About"; // ✅ About page
 
 // Create a single QueryClient instance
 const queryClient = new QueryClient();
@@ -24,9 +27,10 @@ const App: React.FC = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/products" element={<ProductsPage />} /> {/* ✅ new route */}
+            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/about" element={<About />} /> {/* ✅ About page */}
             
-            {/* Catch-all route must be last */}
+            {/* Catch-all route */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
