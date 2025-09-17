@@ -78,6 +78,12 @@ const Navbar = () => {
             >
               About
             </Link>
+            <Link
+              to="/customer-love"
+              className="relative text-chocolate font-medium hover:text-gold transition-colors duration-300 after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-0.5 after:bg-gold after:shadow-[0_0_8px_rgba(255,215,0,0.7)] after:transition-all after:duration-300 hover:after:w-full"
+            >
+              Customer Love
+            </Link>
             <a
               href="#contact"
               onClick={handleScrollToContact}
@@ -139,6 +145,13 @@ const Navbar = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 About
+              </Link>
+              <Link
+                to="/customer-love"
+                className="block px-3 py-2 text-chocolate font-medium hover:text-gold transition-colors duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Customer Love
               </Link>
               <a
                 href="#contact"

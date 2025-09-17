@@ -15,7 +15,7 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:1337";
 const API_TOKEN = import.meta.env.VITE_STRAPI_API_TOKEN || "";
 
 // ✅ Your WhatsApp Number
-const WHATSAPP_NUMBER = "918284905725";
+const WHATSAPP_NUMBER = "919855371891";
 
 interface Product {
   id: number;

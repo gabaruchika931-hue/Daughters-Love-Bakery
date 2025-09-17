@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ProductsPage from "./pages/Products";
+import CustomerLove from "./pages/CustomerLove"; // ✅ New page
 
 // Components
 import About from "./components/About"; // ✅ About page
@@ -28,7 +29,8 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/products" element={<ProductsPage />} />
-            <Route path="/about" element={<About />} /> {/* ✅ About page */}
+            <Route path="/about" element={<About />} />
+            <Route path="/customer-love" element={<CustomerLove />} /> {/* ✅ Hooked in */}
             
             {/* Catch-all route */}
             <Route path="*" element={<NotFound />} />

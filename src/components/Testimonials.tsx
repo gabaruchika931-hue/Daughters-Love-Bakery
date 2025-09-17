@@ -1,50 +1,46 @@
 "use client";
 
-import { useState } from "react";
-import { Star, Send } from "lucide-react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import {
+  Star,
+  Send,
+  ChevronLeft,
+  ChevronRight,
+  ArrowLeft,
+  ArrowRight,
+  User,
+  Quote,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
+import { useKeenSlider } from "keen-slider/react";
+import { Link } from "react-router-dom";
+import "keen-slider/keen-slider.min.css";
 
 interface Review {
   id: number;
   name: string;
   message: string;
   rating: number;
+  avatar?: string;
   createdAt: string;
 }
 
 const API_URL = import.meta.env.VITE_API_URL;
 const API_TOKEN = import.meta.env.VITE_STRAPI_TOKEN;
 
-const fetchReviews = async (): Promise<Review[]> => {
-  const res = await fetch(`${API_URL}/api/reviews`, {
-    headers: { Authorization: `Bearer ${API_TOKEN}` },
-  });
-  const json = await res.json();
-
-  return json.data
-    .map((r: any) => ({
-      id: r.id,
-      name: r.Name, // ✅ top-level fields
-      message: r.Message,
-      rating: r.Rating,
-      createdAt: r.createdAt,
-    }))
-    .sort(
-      (a: Review, b: Review) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
-};
-
 const Testimonials = () => {
   const queryClient = useQueryClient();
-  const { data: reviews = [], isLoading } = useQuery({
-    queryKey: ["reviews"],
-    queryFn: fetchReviews,
-    staleTime: 60 * 1000, // ✅ cache for 1 min
-  });
+
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(6);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [loadingReviews, setLoadingReviews] = useState(true);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -53,6 +49,51 @@ const Testimonials = () => {
   });
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<null | "success" | "error">(null);
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
+    loop: false,
+    slideChanged(slider) {
+      setCurrentSlide(slider.track.details.rel);
+    },
+    slides: { perView: 3, spacing: 30 },
+    breakpoints: {
+      "(max-width: 1024px)": { slides: { perView: 2, spacing: 20 } },
+      "(max-width: 640px)": { slides: { perView: 1, spacing: 12 } },
+    },
+  });
+
+  const fetchReviews = async (pageNum: number) => {
+    setLoadingReviews(true);
+    try {
+      const res = await axios.get(
+        `${API_URL}/api/reviews?pagination[page]=${pageNum}&pagination[pageSize]=${pageSize}&sort=createdAt:desc`,
+        {
+          headers: { Authorization: `Bearer ${API_TOKEN}` },
+        }
+      );
+
+      const mapped = res.data.data.map((r: any) => ({
+        id: r.id,
+        name: r.Name,
+        message: r.Message,
+        rating: r.Rating,
+        avatar: r.Avatar?.url || null,
+        createdAt: r.createdAt,
+      }));
+
+      setReviews(mapped);
+      setTotalPages(res.data.meta.pagination.pageCount);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    } finally {
+      setLoadingReviews(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchReviews(page);
+  }, [page]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -66,35 +107,28 @@ const Testimonials = () => {
     setStatus(null);
 
     try {
-      const res = await fetch(`${API_URL}/api/reviews`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${API_TOKEN}`,
-        },
-        body: JSON.stringify({
+      await axios.post(
+        `${API_URL}/api/reviews`,
+        {
           data: {
             Name: formData.name,
             Message: formData.message,
             Rating: Number(formData.rating),
           },
-        }),
-      });
-
-      const responseData = await res.json();
-      console.log("Response from Strapi:", responseData);
-
-      if (!res.ok) {
-        throw new Error(
-          responseData?.error?.message || "Failed to submit review"
-        );
-      }
-
-      // refresh reviews
-      queryClient.invalidateQueries({ queryKey: ["reviews"] });
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${API_TOKEN}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       setFormData({ name: "", message: "", rating: 5 });
       setStatus("success");
+
+      fetchReviews(page);
+      queryClient.invalidateQueries({ queryKey: ["reviews"] });
     } catch (err) {
       console.error("Error submitting review:", err);
       setStatus("error");
@@ -104,45 +138,85 @@ const Testimonials = () => {
   };
 
   return (
-    <section id="testimonials" className="bg-warm-white py-16">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-chocolate mb-12">
-          Testimonials & Reviews
+    <section id="testimonials" className="relative bg-gradient-to-b from-warm-white to-pink-50 py-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        {/* Title */}
+        <h2 className="text-4xl md:text-5xl font-extrabold text-chocolate mb-6">
+          Loved by Our Sweet Customers 🍩
         </h2>
+        <p className="text-lg text-gray-600 mb-12 max-w-2xl mx-auto">
+          Every treat tells a story — here’s what our happy customers have to say 💕
+        </p>
 
-        {/* Reviews Grid */}
-        {isLoading ? (
+        {/* Reviews Slider */}
+        {loadingReviews ? (
           <p className="text-gray-500">Loading reviews...</p>
         ) : (
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mb-12">
-            {reviews.map((review) => (
-              <div
-                key={review.id}
-                className="bg-white shadow-lg rounded-2xl p-6 border border-chocolate/10"
-              >
-                <div className="flex justify-center mb-4">
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <Star
-                      key={i}
-                      className={`w-5 h-5 ${
-                        i < review.rating
-                          ? "text-gold fill-current"
-                          : "text-gray-300"
-                      }`}
-                    />
-                  ))}
+          <div className="relative">
+            <div ref={sliderRef} className="keen-slider">
+              {reviews.map((review) => (
+                <div
+                  key={review.id}
+                  className="keen-slider__slide bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 text-left flex flex-col justify-between relative"
+                >
+                  <Quote className="absolute top-4 right-4 text-pink-200 w-8 h-8" />
+                  
+                  <div className="flex mb-4">
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <Star
+                        key={i}
+                        className={`w-5 h-5 ${
+                          i < review.rating
+                            ? "text-yellow-500 fill-yellow-500"
+                            : "text-gray-300"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <p className="text-gray-700 italic mb-6 leading-relaxed">
+                    “{review.message}”
+                  </p>
+
+                  <div className="flex items-center gap-3 mt-auto">
+                    {review.avatar ? (
+                      <img
+                        src={`${API_URL}${review.avatar}`}
+                        alt={review.name}
+                        className="w-10 h-10 rounded-full object-cover border-2 border-pink-300"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 rounded-full bg-chocolate text-white flex items-center justify-center">
+                        <User className="w-5 h-5" />
+                      </div>
+                    )}
+                    <h4 className="font-semibold text-chocolate">
+                      – {review.name}
+                    </h4>
+                  </div>
                 </div>
-                <p className="text-gray-700 italic mb-4">“{review.message}”</p>
-                <h4 className="font-semibold text-chocolate">– {review.name}</h4>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            {/* Arrows */}
+            <button
+              onClick={() => instanceRef.current?.prev()}
+              className="absolute left-0 top-1/2 -translate-y-1/2 bg-white shadow rounded-full p-2 hover:bg-chocolate hover:text-white transition"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => instanceRef.current?.next()}
+              className="absolute right-0 top-1/2 -translate-y-1/2 bg-white shadow rounded-full p-2 hover:bg-chocolate hover:text-white transition"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
         )}
 
         {/* Review Form */}
-        <div className="max-w-xl mx-auto text-left">
+        <div className="max-w-xl mx-auto text-left mt-20 bg-white p-8 rounded-2xl shadow-lg">
           <h3 className="text-2xl font-bold text-chocolate mb-4">
-            Leave a Review
+            ✨ Your Voice Shapes Our Journey — Share Your Sweet Story
           </h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
@@ -154,7 +228,6 @@ const Testimonials = () => {
               required
               className="bg-white border border-gray-300"
             />
-
             <Textarea
               name="message"
               placeholder="Your Review"
@@ -163,7 +236,6 @@ const Testimonials = () => {
               required
               className="bg-white border border-gray-300"
             />
-
             <div>
               <label className="block mb-2 font-medium text-chocolate">
                 Rating
@@ -184,7 +256,13 @@ const Testimonials = () => {
               </select>
             </div>
 
-            <Button type="submit" variant="gold" size="lg" disabled={loading}>
+            <Button
+              type="submit"
+              variant="gold"
+              size="lg"
+              disabled={loading}
+              className="transition-all duration-300 hover:scale-105 hover:shadow-lg"
+            >
               {loading ? "Submitting..." : "Submit Review"}
               <Send className="w-4 h-4 ml-2" />
             </Button>
@@ -196,10 +274,23 @@ const Testimonials = () => {
             )}
             {status === "error" && (
               <p className="text-red-600 mt-3">
-                ❌ Could not submit your review. Please check console.
+                ❌ Could not submit your review.
               </p>
             )}
           </form>
+        </div>
+
+        {/* CTA Button */}
+        <div className="mt-16 text-center">
+          <Link to="/customer-love">
+            <Button
+              variant="gold"
+              size="lg"
+              className="px-10 py-4 text-lg rounded-full transition-all duration-300 hover:scale-110 hover:shadow-2xl"
+            >
+              🍰 Join the Wall of Love →
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
